@@ -51,7 +51,7 @@ class GridView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = K.Colors.lynxWhite
+        self.backgroundColor = .lynxWhite
         setupCollectionView()
         
     }

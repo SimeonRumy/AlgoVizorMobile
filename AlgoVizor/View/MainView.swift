@@ -10,10 +10,20 @@ import UIKit
 class MainView: UIView {
     
     let grid = GridView()
+    let panel = ButtonPanel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .brown
+        setupUI()
+    }
+    
+    func setupUI() {
+        addGrid()
+        addPanel()
+    }
+    
+    func addGrid() {
         addSubview(grid)
         grid.anchorHeigth(to: self, multiplier: 0.7)
         grid.anchor(top: self.topAnchor,
@@ -22,6 +32,14 @@ class MainView: UIView {
                     trailing: self.trailingAnchor,
                     padding: UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0))
         grid.backgroundColor = .yellow
+    }
+    
+    func addPanel() {
+        addSubview(panel)
+        panel.anchor(top: grid.bottomAnchor,
+                     leading: self.leadingAnchor,
+                     bottom: self.bottomAnchor,
+                     trailing: self.trailingAnchor)
     }
     
     required init?(coder: NSCoder) {

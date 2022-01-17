@@ -13,7 +13,7 @@ class GridSquare: UICollectionViewCell {
         super.init(frame: frame)
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
-        self.backgroundColor = K.Colors.lynxWhite
+        self.backgroundColor = .lynxWhite
     }
     
     required init?(coder: NSCoder) {

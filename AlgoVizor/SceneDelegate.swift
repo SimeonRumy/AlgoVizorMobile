@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = ViewController()
-        window.backgroundColor = K.Colors.lynxWhite
+        window.backgroundColor = .lynxWhite
         self.window = window
         window.makeKeyAndVisible()
     }
