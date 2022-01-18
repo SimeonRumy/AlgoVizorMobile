@@ -30,8 +30,7 @@ class MainView: UIView {
                     leading: self.leadingAnchor,
                     bottom: nil,
                     trailing: self.trailingAnchor,
-                    padding: UIEdgeInsets(top: 50, left: 0, bottom: 0, right: 0))
-        grid.backgroundColor = .yellow
+                    padding: UIEdgeInsets(top: 00, left: 0, bottom: 0, right: 0))
     }
     
     func addPanel() {
