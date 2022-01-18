@@ -6,38 +6,7 @@
 //
 import UIKit
 
-let GRID_SIZE = 40
-
-struct GridDimensionCalculator {
-    
-    private let minSize = GRID_SIZE
-    
-    let viewHeight: Int
-    let viewWidth: Int
-    
-    var rowNumber: Int {
-        return viewHeight / minSize
-    }
-    
-    var colNumber: Int {
-        return viewWidth / minSize
-    }
-    
-    var numberOfSquares: Int {
-        return colNumber * rowNumber
-    }
-    
-    func getGridIndex(index: IndexPath) -> GridIndex {
-        let row = index.item / rowNumber
-        let col = index.item % rowNumber
-        return GridIndex(row: row, column: col)
-    }
-}
-
-struct GridIndex {
-    let row: Int
-    let column: Int
-}
+let GRID_SIZE = 30
 
 protocol GridViewDelegate: AnyObject {
     func userSelectedGrid(gridIndex: GridIndex)

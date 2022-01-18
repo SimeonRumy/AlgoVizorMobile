@@ -9,50 +9,42 @@ import UIKit
 
 class ButtonPanel: UIView {
     
-    // launch
-    // set start
-    // set end
-    // add walls
-    // select algo
-    
     var lauchButton = UIButton(type: .system)
     var algoSelectionButton = UIButton(type: .system)
-    //    var elementSelectionButton = UIButton(type: .system)
     
-    
-    var setStartButton = UIButton(type: .system)
-    var setEndButton = UIButton(type: .system)
-    var addWallButton = UIButton(type: .system)
+    var setStartButton = ElementButton()
+    var setEndButton = ElementButton()
+    var addWallButton = ElementButton()
     
     var algoPickerStack: UIStackView = UIStackView()
     var gridSettingStack: UIStackView = UIStackView()
     
-    let label = UILabel()
-    //    let label2 = UILabel()
-    
+    let selectAlgorithmLabel = UILabel()
     var isAlgoRunning = false
-    
     let wrapView = UIView()
-    //    let wrapView2 = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .lynxWhite
         addUIElements()
         addAlgoPickerStack()
-        addSelectAlgorithmButton()
+        setupLabel()
+        addSelectAlgoButton()
         addLauchButton()
-        addButtonStack()
-        addStartGridButton()
-        addEndGridButton()
-        addWallGridButton()
+        addElementSelectionButtons()
     }
     
     func addUIElements() {
         addSubview(wrapView)
         addSubview(gridSettingStack)
         addSubview(lauchButton)
-        
+    }
+    
+    private func addElementSelectionButtons() {
+        addButtonStack()
+        addStartGridButton()
+        addEndGridButton()
+        addWallGridButton()
     }
     
     func addAlgoPickerStack() {
@@ -69,7 +61,7 @@ class ButtonPanel: UIView {
                         padding: UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 50))
         wrapView.backgroundColor = .systemGray5
         wrapView.layer.cornerRadius = 10
-        wrapView.anchorHeigth(to: self, multiplier: 0.24)
+//        wrapView.anchorHeigth(to: self, multiplier: 0.24)
         
     }
     
@@ -87,69 +79,53 @@ class ButtonPanel: UIView {
     }
     
     func addStartGridButton() {
-        var config = UIButton.Configuration.tinted()
-        config.title = "Set Start Point"
-        config.image = UIImage(systemName: "arrow.up.right.square.fill")
-        config.baseForegroundColor = .systemGreen
-        config.baseBackgroundColor = .systemGreen
-        config.imagePadding = 6
-        config.imagePlacement = .trailing
-        config.cornerStyle = .capsule
-        config.titleAlignment = .center
-        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
-            return outgoing
-        }
-        setStartButton = UIButton(configuration: config, primaryAction: .none)
+        setStartButton.configuration?.title = "Set Start Point"
+        setStartButton.configuration?.image = UIImage(systemName: "arrow.up.right.square.fill")
+        setStartButton.configuration?.baseForegroundColor = .systemGreen
+        setStartButton.configuration?.baseBackgroundColor = .systemGreen
         gridSettingStack.addArrangedSubview(setStartButton)
         
     }
     
     func addEndGridButton() {
-        var config = UIButton.Configuration.tinted()
-        config.title = "Set End Point"
-        config.image = UIImage(systemName: "arrow.down.right.square.fill")
-        config.baseForegroundColor = .systemRed
-        config.baseBackgroundColor = .systemRed
-        config.imagePadding = 6
-        config.imagePlacement = .trailing
-        config.cornerStyle = .capsule
-        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
-            return outgoing
-        }
-        setEndButton = UIButton(configuration: config, primaryAction: .none)
+        setEndButton.configuration?.title = "Set End Point"
+        setEndButton.configuration?.image = UIImage(systemName: "arrow.down.right.square.fill")
+        setEndButton.configuration?.baseForegroundColor = .systemRed
+        setEndButton.configuration?.baseBackgroundColor = .systemRed
         gridSettingStack.addArrangedSubview(setEndButton)
     }
     
     func addWallGridButton() {
-        
-        var config = UIButton.Configuration.tinted()
-        config.title = "Add Walls"
-        config.image = UIImage(systemName: "square.grid.3x1.below.line.grid.1x2")
-        config.baseForegroundColor = .systemBrown
-        config.baseBackgroundColor = .systemBrown
-        config.imagePadding = 6
-        config.imagePlacement = .trailing
-        config.cornerStyle = .capsule
-        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
-            return outgoing
-        }
-        
-        addWallButton = UIButton(configuration: config, primaryAction: .none)
+        addWallButton.configuration?.title = "Add Walls"
+        addWallButton.configuration?.image = UIImage(systemName: "square.grid.3x1.below.line.grid.1x2", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+        addWallButton.configuration?.baseForegroundColor = .systemBrown
+        addWallButton.configuration?.baseBackgroundColor = .systemBrown
         gridSettingStack.addArrangedSubview(addWallButton)
     }
     
     func addLauchButton() {
+        lauchButton = UIButton(configuration: configureLaunchButton(), primaryAction: .none)
+        lauchButton.configurationUpdateHandler = { [unowned self] button in
+            var conf = button.configuration
+            conf?.showsActivityIndicator = self.isAlgoRunning
+            button.configuration = conf
+            
+        }
+        addSubview(lauchButton)
+        lauchButton.anchor(top: gridSettingStack.bottomAnchor,
+                           leading: wrapView.leadingAnchor,
+                           bottom: nil,
+                           trailing: wrapView.trailingAnchor,
+                           padding: UIEdgeInsets(top: 15, left: 50, bottom: 10, right: 50))
+        lauchButton.centerXInSuperview()
+        //        lauchButton.anchorHeigth(to: self, multiplier: 0.25)
+    }
+    
+    func configureLaunchButton() -> UIButton.Configuration {
         var config = UIButton.Configuration.gray()
-        config.title = "Run"
+        config.title = "Start"
         config.image = UIImage(systemName: "play.circle")
         config.baseForegroundColor = .systemPink
-        //        config.baseBackgroundColor = .systemPink
         config.imagePadding = 6
         config.imagePlacement = .trailing
         //        config.showsActivityIndicator = true
@@ -158,48 +134,25 @@ class ButtonPanel: UIView {
             outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
             return outgoing
         }
-        lauchButton = UIButton(configuration: config, primaryAction: .none)
-        addSubview(lauchButton)
-        lauchButton.configurationUpdateHandler = { [unowned self] button in
-            var conf = button.configuration
-            conf?.showsActivityIndicator = self.isAlgoRunning
-            button.configuration = conf
-            
-        }
-        
-        lauchButton.anchor(top: gridSettingStack.bottomAnchor,
-                           leading: wrapView.leadingAnchor,
-                           bottom: nil,
-                           trailing: wrapView.trailingAnchor,
-                           padding: UIEdgeInsets(top: 15, left: 50, bottom: 10, right: 50))
-        lauchButton.centerXInSuperview()
-        lauchButton = UIButton(configuration: config, primaryAction: .none)
-        //        lauchButton.anchorHeigth(to: self, multiplier: 0.25)
+        return config
     }
     
     
     
-    func addSelectAlgorithmButton() {
-        
-        let add = UIAction(title: "Dijkstra") { (action) in
-            print("Add")
-        }
-        let edit = UIAction(title: "A-Star") { (action) in
-            print("Edit")
-        }
-        let delete = UIAction(title: "BFS") { (action) in
-            print("Delete")
-        }
-        
-        let menu = UIMenu(title: "Menu", children: [add, edit, delete])
-        algoSelectionButton.menu = menu
+    
+    func addSelectAlgoButton() {
+        algoSelectionButton.menu = setupAlgoMenu()
+        algoSelectionButton.configuration = configureAlgoButton()
         algoSelectionButton.showsMenuAsPrimaryAction = true
         algoSelectionButton.changesSelectionAsPrimaryAction = true
+        algoPickerStack.addArrangedSubview(algoSelectionButton)
+        
+    }
+    
+    func configureAlgoButton() -> UIButton.Configuration {
         var config = UIButton.Configuration.plain()
         config.cornerStyle = .capsule
-        config.title = "Select Algorithm"
         config.baseForegroundColor = .systemBlue
-        //        config.baseBackgroundColor = .systemBlue
         config.imagePadding = 6
         config.imagePlacement = .trailing
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
@@ -207,16 +160,33 @@ class ButtonPanel: UIView {
             outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
             return outgoing
         }
-        algoSelectionButton.configuration = config
-        label.font = label.font.withSize(FontSizeCalculator.fontSize)
-        label.text = "Selected Algorithm"
-        algoPickerStack.addArrangedSubview(label)
-        algoPickerStack.addArrangedSubview(algoSelectionButton)
-        
-        
+        return config
+
     }
     
+    func setupAlgoMenu() -> UIMenu {
+        let dijkstra = UIAction(title: "Dijkstra") { (action) in
+            print("Add")
+        }
+        let astar = UIAction(title: "A-Star") { (action) in
+            print("Edit")
+        }
+        let bfs = UIAction(title: "BFS") { (action) in
+            print("Delete")
+        }
+        let dfs = UIAction(title: "BFS") { (action) in
+            print("Delete")
+        }
+        
+        let menu = UIMenu(title: "Menu", children: [dijkstra, astar, bfs, dfs])
+        return menu
+    }
     
+    private func setupLabel() {
+        selectAlgorithmLabel.font = selectAlgorithmLabel.font.withSize(FontSizeCalculator.fontSize)
+        selectAlgorithmLabel.text = "Selected Algorithm"
+        algoPickerStack.addArrangedSubview(selectAlgorithmLabel)
+    }
     
     
     required init?(coder: NSCoder) {

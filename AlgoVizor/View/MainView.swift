@@ -25,7 +25,7 @@ class MainView: UIView {
     
     func addGrid() {
         addSubview(grid)
-        grid.anchorHeigth(to: self, multiplier: 0.7)
+        grid.anchorHeigth(to: self, multiplier: 0.75)
         grid.anchor(top: self.topAnchor,
                     leading: self.leadingAnchor,
                     bottom: nil,
