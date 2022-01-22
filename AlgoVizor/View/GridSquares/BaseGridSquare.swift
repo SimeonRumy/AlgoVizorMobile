@@ -7,13 +7,22 @@
 
 import UIKit
 
-class GridSquare: UICollectionViewCell {
+class NodeCell: UICollectionViewCell {
+    
+    var isVisited = false {
+        didSet {
+            if isVisited {
+                backgroundColor = .yellow
+            } else {
+                backgroundColor = .lynxWhite
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1
-        self.backgroundColor = .lynxWhite
     }
     
     required init?(coder: NSCoder) {

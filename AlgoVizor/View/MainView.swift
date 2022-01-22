@@ -25,16 +25,16 @@ class MainView: UIView {
     
     func addGrid() {
         addSubview(grid)
+        addSubview(panel)
         grid.anchorHeigth(to: self, multiplier: 0.75)
         grid.anchor(top: self.topAnchor,
                     leading: self.leadingAnchor,
-                    bottom: nil,
+                    bottom: self.panel.topAnchor,
                     trailing: self.trailingAnchor,
                     padding: UIEdgeInsets(top: 00, left: 0, bottom: 0, right: 0))
     }
     
     func addPanel() {
-        addSubview(panel)
         panel.anchor(top: grid.bottomAnchor,
                      leading: self.leadingAnchor,
                      bottom: self.bottomAnchor,

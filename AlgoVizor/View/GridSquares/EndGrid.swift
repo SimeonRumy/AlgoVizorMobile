@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EndGridSquare: GridSquare {
+class EndNodeCell: NodeCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

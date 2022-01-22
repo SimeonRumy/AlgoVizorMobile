@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WallGridSquare: GridSquare {
+class WallNodeCell: NodeCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -6,17 +6,12 @@
 //
 import UIKit
 
-let GRID_SIZE = 30
+let GRID_SIZE = 75
 
-protocol GridViewDelegate: AnyObject {
-    func userSelectedGrid(gridIndex: GridIndex)
-}
 
 class GridView: UIView {
     
-    private var grid: UICollectionView!
-    weak var delegate: GridViewDelegate!
-    private let reuseIdentifier = "Cell"
+    var grid: UICollectionView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,10 +28,6 @@ class GridView: UIView {
         grid = UICollectionView(frame: self.frame, collectionViewLayout: layout)
         addSubview(grid)
         grid.fillSuperview()
-        grid.backgroundColor = .red
-        grid.dataSource = self
-        grid.delegate = self
-        grid.register(GridSquare.self, forCellWithReuseIdentifier: reuseIdentifier)
         grid.backgroundColor = .black
         grid.isScrollEnabled = false
         
@@ -47,34 +38,3 @@ class GridView: UIView {
     }
     
 }
-
-extension GridView: UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return GridDimensionCalculator(viewHeight: Int(self.frame.height), viewWidth: Int(self.frame.width)).numberOfSquares
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! GridSquare
-        return cell
-    }
-    
-}
-
-extension GridView: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let contentDimensions = GridDimensionCalculator(viewHeight: Int(self.frame.height), viewWidth: Int(self.frame.width))
-        return UIEdgeInsets(top: (self.frame.height - CGFloat(contentDimensions.rowNumber*GRID_SIZE))/2,
-                            left: (self.frame.width - CGFloat(contentDimensions.colNumber*GRID_SIZE))/2,
-                            bottom: (self.frame.height - CGFloat(contentDimensions.rowNumber*GRID_SIZE))/2,
-                            right: (self.frame.width - CGFloat(contentDimensions.colNumber*GRID_SIZE))/2)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let contentDimensions = GridDimensionCalculator(viewHeight: Int(self.frame.height), viewWidth: Int(self.frame.width))
-        delegate.userSelectedGrid(gridIndex: contentDimensions.getGridIndex(index: indexPath))
-    }
-    
-}
-

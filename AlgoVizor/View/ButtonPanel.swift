@@ -97,7 +97,7 @@ class ButtonPanel: UIView {
     
     func addWallGridButton() {
         addWallButton.configuration?.title = "Add Walls"
-        addWallButton.configuration?.image = UIImage(systemName: "square.grid.3x1.below.line.grid.1x2", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+        addWallButton.configuration?.image = UIImage(systemName: "square.grid.3x1.below.line.grid.1x2")
         addWallButton.configuration?.baseForegroundColor = .systemBrown
         addWallButton.configuration?.baseBackgroundColor = .systemBrown
         gridSettingStack.addArrangedSubview(addWallButton)
