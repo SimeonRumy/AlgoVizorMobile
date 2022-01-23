@@ -109,7 +109,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
                             bottom: (height - CGFloat(contentDimensions.rowNumber*GRID_SIZE))/2,
                             right: (width - CGFloat(contentDimensions.colNumber*GRID_SIZE))/2)
     }
-//    
+//
 //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        UIView.animate(withDuration: 1, delay: 1, usingSpringWithDamping: 0.5, initialSpringVelocity: 10, options: [], animations: {
 //            cell.transform = .identity
@@ -145,6 +145,8 @@ enum ElementState {
 enum Algorithms: String, CaseIterable, RawRepresentable {
     case Dijkstra
     case Astar
+    case BFS
+    case DFS
 }
 
 class AlgorithmFactory {
@@ -161,6 +163,10 @@ class AlgorithmFactory {
             return Dijkstra(grid: grid)
         case .Astar:
             return AStar(grid: grid)
+        case .BFS:
+            return Dijkstra(grid: grid)
+        case .DFS:
+            return DFS(grid: grid)
         }
     }
 
@@ -169,7 +175,6 @@ class AlgorithmFactory {
         var actions = [UIAction]()
         for algorithm in Algorithms.allCases {
             actions.append(UIAction(title: algorithm.rawValue) { [unowned self] action in
-                print("hi")
                 selectedAlgorithm = algorithm
             })
         }

@@ -116,6 +116,24 @@ class ButtonPanel: UIView {
         addWallButton.configuration?.image = UIImage(systemName: "square.grid.3x1.below.line.grid.1x2")
         addWallButton.configuration?.baseForegroundColor = .systemBrown
         addWallButton.configuration?.baseBackgroundColor = .systemBrown
+        addWallButton.configurationUpdateHandler = { [unowned self] button in
+            var conf = button.configuration
+            if button.state == .selected {
+                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                    var outgoing = incoming
+                    outgoing.font = UIFont.boldSystemFont(ofSize: FontSizeCalculator.fontSize)
+                    return outgoing
+                }
+            } else {
+                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                    var outgoing = incoming
+                    outgoing.font = UIFont.systemFont(ofSize: FontSizeCalculator.fontSize)
+                    return outgoing
+                }
+            }
+            button.configuration = conf
+
+        }
         gridSettingStack.addArrangedSubview(addWallButton)
     }
     
@@ -127,12 +145,6 @@ class ButtonPanel: UIView {
             button.configuration = conf
             
         }
-//        addSubview(lauchButton)
-//        lauchButton.anchor(top: gridSettingStack.bottomAnchor,
-//                           leading: wrapView.leadingAnchor,
-//                           bottom: nil,
-//                           trailing: wrapView.trailingAnchor,
-//                           padding: UIEdgeInsets(top: 15, left: 50, bottom: 10, right: 50))
         lauchButtonStack.addArrangedSubview(lauchButton)
     }
     
