@@ -107,7 +107,8 @@ class ButtonPanel: UIView {
         lauchButton = UIButton(configuration: configureLaunchButton(), primaryAction: .none)
         lauchButton.configurationUpdateHandler = { [unowned self] button in
             var conf = button.configuration
-            conf?.showsActivityIndicator = self.isAlgoRunning
+            let currentState = !conf!.showsActivityIndicator
+            conf?.showsActivityIndicator = isAlgoRunning
             button.configuration = conf
             
         }
@@ -117,7 +118,6 @@ class ButtonPanel: UIView {
                            bottom: nil,
                            trailing: wrapView.trailingAnchor,
                            padding: UIEdgeInsets(top: 15, left: 50, bottom: 10, right: 50))
-        lauchButton.centerXInSuperview()
         //        lauchButton.anchorHeigth(to: self, multiplier: 0.25)
     }
     
@@ -128,7 +128,7 @@ class ButtonPanel: UIView {
         config.baseForegroundColor = .systemPink
         config.imagePadding = 6
         config.imagePlacement = .trailing
-        //        config.showsActivityIndicator = true
+        config.showsActivityIndicator = false
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
             outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
@@ -141,7 +141,7 @@ class ButtonPanel: UIView {
     
     
     func addSelectAlgoButton() {
-        algoSelectionButton.menu = setupAlgoMenu()
+//        algoSelectionButton.menu = setupAlgoMenu()
         algoSelectionButton.configuration = configureAlgoButton()
         algoSelectionButton.showsMenuAsPrimaryAction = true
         algoSelectionButton.changesSelectionAsPrimaryAction = true
@@ -164,23 +164,23 @@ class ButtonPanel: UIView {
 
     }
     
-    func setupAlgoMenu() -> UIMenu {
-        let dijkstra = UIAction(title: "Dijkstra") { (action) in
-            print("Add")
-        }
-        let astar = UIAction(title: "A-Star") { (action) in
-            print("Edit")
-        }
-        let bfs = UIAction(title: "BFS") { (action) in
-            print("Delete")
-        }
-        let dfs = UIAction(title: "BFS") { (action) in
-            print("Delete")
-        }
-        
-        let menu = UIMenu(title: "Menu", children: [dijkstra, astar, bfs, dfs])
-        return menu
-    }
+//    func setupAlgoMenu() -> UIMenu {
+//        let dijkstra = UIAction(title: "Dijkstra") { (action) in
+//            print("Add")
+//        }
+//        let astar = UIAction(title: "A-Star") { (action) in
+//            print("Edit")
+//        }
+//        let bfs = UIAction(title: "BFS") { (action) in
+//            print("Delete")
+//        }
+//        let dfs = UIAction(title: "BFS") { (action) in
+//            print("Delete")
+//        }
+//
+//        let menu = UIMenu(title: "Menu", children: [dijkstra, astar, bfs, dfs])
+//        return menu
+//    }
     
     private func setupLabel() {
         selectAlgorithmLabel.font = selectAlgorithmLabel.font.withSize(FontSizeCalculator.fontSize)

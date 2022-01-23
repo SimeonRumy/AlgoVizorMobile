@@ -6,7 +6,7 @@
 //
 import UIKit
 
-let GRID_SIZE = 75
+let GRID_SIZE = 50
 
 
 class GridView: UIView {

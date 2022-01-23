@@ -26,6 +26,7 @@ class ElementButton: UIButton {
         }
         
         self.configuration = config
+        changesSelectionAsPrimaryAction = true
         
     }
     

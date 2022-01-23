@@ -1,13 +1,13 @@
 //
-//  Dijkstra.swift
+//  AStar.swift
 //  AlgoVizor
 //
-//  Created by Simeon Rumyannikov on 21/01/2022.
+//  Created by Simeon Rumyannikov on 22/01/2022.
 //
 
 import Foundation
 
-class Dijkstra: Algorithm {
+class AStar: Algorithm {
     
     var grid: Grid
     var visitedNodesInOrder = [Node]()
@@ -27,6 +27,9 @@ class Dijkstra: Algorithm {
         
         timer = Timer.scheduledTimer(withTimeInterval: 0.0001, repeats: true) { [self] _ in
             unvisitedNodes = unvisitedNodes.sorted()
+            for n in unvisitedNodes {
+                print(n.gridIndex, n.distance)
+            }
             let node = unvisitedNodes.removeFirst()
             let closestNode = node
             if !closestNode.isWall {
@@ -43,13 +46,17 @@ class Dijkstra: Algorithm {
         
     }
     
+    func getEuclideanDistance(node: Node, finishNode: Node) -> Double {
+        let e = pow(Double(node.gridIndex.row - finishNode.gridIndex.row), 2) + pow(Double(node.gridIndex.column - finishNode.gridIndex.column),2)
+        return e.squareRoot()
+    }
+    
     func updateUnvisitedNeighbors(of node: Node) {
         let unvisitedNeighbors = getUnvisitedNeighbors(of: node)
         for neighbor in unvisitedNeighbors {
-            if ((node.distance + 1) < neighbor.distance ) {
-                neighbor.distance = node.distance + 1
-            }
-            
+            neighbor.distance = node.distance + 1 -
+            getEuclideanDistance(node: node, finishNode: grid.getEndNode()) +
+            getEuclideanDistance(node: neighbor, finishNode: grid.getEndNode())
         }
     }
     
