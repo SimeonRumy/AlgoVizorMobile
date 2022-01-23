@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Grid {
+class Grid {
     
     private var data: [[Node]] = []
     private var elementSelectionState: ElementState = .Start
@@ -35,15 +35,22 @@ struct Grid {
         return data[currentEnd.row][currentEnd.column]
     }
     
-    mutating func fetchAllNodes() -> [Node] {
+    func fetchAllNodes() -> [Node] {
         return data.flatMap { $0 }
     }
     
-    mutating func fetchNode(index: GridIndex) -> Node {
+    func fetchNode(index: GridIndex) -> Node {
         return data[index.row][index.column]
     }
     
-    mutating func userTappedOnNode(index: IndexPath) -> [IndexPath] {
+    func resetAllNodes() {
+        for node in fetchAllNodes() {
+            node.isVisited = false
+            node.distance = Double.greatestFiniteMagnitude
+        }
+    }
+    
+   func userTappedOnNode(index: IndexPath) -> [IndexPath] {
         let index = getGridIndex(index: index)
         var toReload = [IndexPath]()
         print(index)
@@ -66,20 +73,16 @@ struct Grid {
         return toReload
     }
     
-    mutating func elementSelectionStateChanged(state: ElementState) {
+    func elementSelectionStateChanged(state: ElementState) {
         elementSelectionState = state
     }
     
-    mutating func resetAllNodes() {
-        initGrid(numberOfRows, numberOfCols)
-    }
-    
-    private mutating func setDefaultStartEndNodes(_ numberOfRows: Int, _ numberOfCols: Int) {
+    private func setDefaultStartEndNodes(_ numberOfRows: Int, _ numberOfCols: Int) {
         currentStart = GridIndex(row: 2, column: 2)
         currentEnd = GridIndex(row: numberOfRows - 3, column: numberOfCols - 3)
     }
     
-    private mutating func initGrid(_ numberOfRows: Int, _ numberOfCols: Int) {
+    private func initGrid(_ numberOfRows: Int, _ numberOfCols: Int) {
         for row in 0..<numberOfRows {
             data.append(Array.init(repeating: Node(gridIndex: GridIndex(row: 1, column: 1)), count: numberOfCols))
             for col in 0..<numberOfCols {

@@ -27,6 +27,7 @@ class NodeCellController: CollectionCellController {
     func cellFromCollectionView(_ collectionView: UICollectionView, forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: type(of: self).cellIdentifier, for: indexPath) as! NodeCell
         cell.isVisited = item.isVisited
+//        cell.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         return cell
     }
     

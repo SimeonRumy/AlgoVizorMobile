@@ -12,12 +12,16 @@ class NodeCell: UICollectionViewCell {
     var isVisited = false {
         didSet {
             if isVisited {
-                backgroundColor = .yellow
+//                UIView.animate(withDuration: 1) {
+                    self.backgroundColor = .yellow
+//                }
             } else {
                 backgroundColor = .lynxWhite
             }
         }
     }
+    
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)

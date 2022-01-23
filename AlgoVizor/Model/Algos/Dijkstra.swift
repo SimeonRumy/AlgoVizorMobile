@@ -30,7 +30,6 @@ class Dijkstra: Algorithm {
             let node = unvisitedNodes.removeFirst()
             let closestNode = node
             if !closestNode.isWall {
-                print(closestNode.gridIndex)
                 if closestNode.distance == Double.greatestFiniteMagnitude { stopTimer(updateViewOnCompletion) }
                 closestNode.isVisited = true
                 updateViewDuringRun()

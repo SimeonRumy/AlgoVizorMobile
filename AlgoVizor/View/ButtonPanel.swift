@@ -10,14 +10,17 @@ import UIKit
 class ButtonPanel: UIView {
     
     var lauchButton = UIButton(type: .system)
+    var resetGridButton = UIButton(type: .system)
     var algoSelectionButton = UIButton(type: .system)
     
     var setStartButton = ElementButton()
     var setEndButton = ElementButton()
     var addWallButton = ElementButton()
+
     
     var algoPickerStack: UIStackView = UIStackView()
     var gridSettingStack: UIStackView = UIStackView()
+    var lauchButtonStack: UIStackView = UIStackView()
     
     let selectAlgorithmLabel = UILabel()
     var isAlgoRunning = false
@@ -30,6 +33,8 @@ class ButtonPanel: UIView {
         addAlgoPickerStack()
         setupLabel()
         addSelectAlgoButton()
+        addLaunchButtonStack()
+        addResetButton()
         addLauchButton()
         addElementSelectionButtons()
     }
@@ -38,6 +43,7 @@ class ButtonPanel: UIView {
         addSubview(wrapView)
         addSubview(gridSettingStack)
         addSubview(lauchButton)
+        addSubview(lauchButtonStack)
     }
     
     private func addElementSelectionButtons() {
@@ -61,7 +67,6 @@ class ButtonPanel: UIView {
                         padding: UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 50))
         wrapView.backgroundColor = .systemGray5
         wrapView.layer.cornerRadius = 10
-//        wrapView.anchorHeigth(to: self, multiplier: 0.24)
         
     }
     
@@ -69,12 +74,23 @@ class ButtonPanel: UIView {
         gridSettingStack.axis = .horizontal
         gridSettingStack.spacing = 5
         gridSettingStack.distribution = .fillEqually
-//        gridSettingStack.anchorHeigth(to: self, multiplier: 0.25)
         gridSettingStack.anchor(top: wrapView.bottomAnchor,
                                 leading: leadingAnchor,
                                 bottom: nil,
                                 trailing: trailingAnchor,
                                 padding: UIEdgeInsets(top: 15, left: 5, bottom: 5, right: 5))
+        
+    }
+    
+    func addLaunchButtonStack() {
+        lauchButtonStack.axis = .horizontal
+        lauchButtonStack.spacing = 5
+        lauchButtonStack.distribution = .fillEqually
+        lauchButtonStack.anchor(top: gridSettingStack.bottomAnchor,
+                                leading: leadingAnchor,
+                                bottom: nil,
+                                trailing: trailingAnchor,
+                                padding: UIEdgeInsets(top: 15, left: 25, bottom: 5, right: 25))
         
     }
     
@@ -107,18 +123,38 @@ class ButtonPanel: UIView {
         lauchButton = UIButton(configuration: configureLaunchButton(), primaryAction: .none)
         lauchButton.configurationUpdateHandler = { [unowned self] button in
             var conf = button.configuration
-            let currentState = !conf!.showsActivityIndicator
             conf?.showsActivityIndicator = isAlgoRunning
             button.configuration = conf
             
         }
-        addSubview(lauchButton)
-        lauchButton.anchor(top: gridSettingStack.bottomAnchor,
-                           leading: wrapView.leadingAnchor,
-                           bottom: nil,
-                           trailing: wrapView.trailingAnchor,
-                           padding: UIEdgeInsets(top: 15, left: 50, bottom: 10, right: 50))
-        //        lauchButton.anchorHeigth(to: self, multiplier: 0.25)
+//        addSubview(lauchButton)
+//        lauchButton.anchor(top: gridSettingStack.bottomAnchor,
+//                           leading: wrapView.leadingAnchor,
+//                           bottom: nil,
+//                           trailing: wrapView.trailingAnchor,
+//                           padding: UIEdgeInsets(top: 15, left: 50, bottom: 10, right: 50))
+        lauchButtonStack.addArrangedSubview(lauchButton)
+    }
+    
+    func addResetButton() {
+        resetGridButton = UIButton(configuration: configureResetButton(), primaryAction: .none)
+        lauchButtonStack.addArrangedSubview(resetGridButton)
+    }
+    
+    func configureResetButton() -> UIButton.Configuration {
+        var config = UIButton.Configuration.gray()
+        config.title = "Reset"
+        config.image = UIImage(systemName: "gobackward")
+        config.baseForegroundColor = .systemPink
+        config.imagePadding = 6
+        config.imagePlacement = .trailing
+        config.showsActivityIndicator = false
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
+            return outgoing
+        }
+        return config
     }
     
     func configureLaunchButton() -> UIButton.Configuration {
@@ -136,12 +172,9 @@ class ButtonPanel: UIView {
         }
         return config
     }
-    
-    
-    
+
     
     func addSelectAlgoButton() {
-//        algoSelectionButton.menu = setupAlgoMenu()
         algoSelectionButton.configuration = configureAlgoButton()
         algoSelectionButton.showsMenuAsPrimaryAction = true
         algoSelectionButton.changesSelectionAsPrimaryAction = true
@@ -163,24 +196,6 @@ class ButtonPanel: UIView {
         return config
 
     }
-    
-//    func setupAlgoMenu() -> UIMenu {
-//        let dijkstra = UIAction(title: "Dijkstra") { (action) in
-//            print("Add")
-//        }
-//        let astar = UIAction(title: "A-Star") { (action) in
-//            print("Edit")
-//        }
-//        let bfs = UIAction(title: "BFS") { (action) in
-//            print("Delete")
-//        }
-//        let dfs = UIAction(title: "BFS") { (action) in
-//            print("Delete")
-//        }
-//
-//        let menu = UIMenu(title: "Menu", children: [dijkstra, astar, bfs, dfs])
-//        return menu
-//    }
     
     private func setupLabel() {
         selectAlgorithmLabel.font = selectAlgorithmLabel.font.withSize(FontSizeCalculator.fontSize)

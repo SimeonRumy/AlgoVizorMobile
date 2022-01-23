@@ -81,7 +81,11 @@ class ViewController: UIViewController {
             grid?.elementSelectionStateChanged(state: .End)
         }), for: .touchUpInside)
         
-//        mainView.panel.algoSelectionButton
+        mainView.panel.resetGridButton.addAction(UIAction(handler: { [unowned self] action in
+            grid?.resetAllNodes()
+            mainView.grid.grid.reloadData()
+        }), for: .touchUpInside)
+        
     }
     
 }
@@ -105,6 +109,12 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
                             bottom: (height - CGFloat(contentDimensions.rowNumber*GRID_SIZE))/2,
                             right: (width - CGFloat(contentDimensions.colNumber*GRID_SIZE))/2)
     }
+//    
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        UIView.animate(withDuration: 1, delay: 1, usingSpringWithDamping: 0.5, initialSpringVelocity: 10, options: [], animations: {
+//            cell.transform = .identity
+//        })
+//    }
     
 }
 
