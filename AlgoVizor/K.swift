@@ -12,7 +12,6 @@ struct FontSizeCalculator {
     static var fontSize:  CGFloat {
         
         let screenHeight = UIScreen.main.bounds.size.width
-        print(screenHeight)
         
         if screenHeight == 320 {
             // iPhone 5 and SE 1st Gen

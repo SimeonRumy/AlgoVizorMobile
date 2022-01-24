@@ -101,8 +101,8 @@ class Grid {
         return GridIndex(row: row, column: col)
     }
     
-    private func getIndexPath(index: GridIndex) -> IndexPath {
-        return IndexPath(row: (index.row + 1) * (index.column + 1), section: 0)
+    func getIndexPath(index: GridIndex) -> IndexPath {
+        return IndexPath(row: (index.row  * numberOfCols) + index.column, section: 0)
     }
     
     

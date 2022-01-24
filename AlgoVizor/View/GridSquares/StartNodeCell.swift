@@ -11,7 +11,8 @@ class StartNodeCell: NodeCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .green
+        backgroundColor = UIColor(red: 0.18, green: 0.80, blue: 0.44, alpha: 1.00)
+        layer.borderColor = UIColor(red: 0.18, green: 0.80, blue: 0.44, alpha: 1.00).cgColor
     }
     
     required init?(coder: NSCoder) {

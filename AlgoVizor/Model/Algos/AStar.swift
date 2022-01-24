@@ -19,7 +19,7 @@ class AStar: Algorithm {
     
     var timer : Timer?
     
-    func run(updateViewDuringRun: @escaping () -> (),  updateViewOnCompletion: @escaping () -> ()) {
+    func run(updateViewDuringRun: @escaping (_ index: GridIndex) -> (),  updateViewOnCompletion: @escaping () -> ()) {
         let start = grid.getStartNode()
         start.distance = 0
         unvisitedNodes = grid.fetchAllNodes().sorted()
@@ -36,7 +36,7 @@ class AStar: Algorithm {
                 print(closestNode.gridIndex)
                 if closestNode.distance == Double.greatestFiniteMagnitude { stopTimer(updateViewOnCompletion) }
                 closestNode.isVisited = true
-                updateViewDuringRun()
+                updateViewDuringRun(closestNode.gridIndex)
                 visitedNodesInOrder.append(closestNode)
                 if closestNode.gridIndex == end.gridIndex { stopTimer(updateViewOnCompletion) }
                 updateUnvisitedNeighbors(of: closestNode)
@@ -57,6 +57,7 @@ class AStar: Algorithm {
             neighbor.distance = node.distance + 1 -
             getEuclideanDistance(node: node, finishNode: grid.getEndNode()) +
             getEuclideanDistance(node: neighbor, finishNode: grid.getEndNode())
+            neighbor.prevNode = node
         }
     }
     

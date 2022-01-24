@@ -56,12 +56,14 @@ class ViewController: UIViewController {
         mainView.panel.lauchButton.addAction(UIAction(handler: { [unowned self] action in
             let algo =  algorithmFactory.getAlgorithm(grid: grid!)
             mainView.panel.isAlgoRunning = true
-            algo.run(updateViewDuringRun: {
-                cellControllers = self.cellControllerFactory.cellControllers(with: (grid?.fetchAllNodes())!)
+            algo.run(updateViewDuringRun: { index in
+//                cellControllers = self.cellControllerFactory.cellControllers(with: (grid?.fetchAllNodes())!)
                 DispatchQueue.main.async {
-                    mainView.grid.grid.reloadData()
-                    mainView.grid.grid.collectionViewLayout.invalidateLayout()
-                    mainView.grid.grid.layoutSubviews()
+                    (cellControllers[grid!.getIndexPath(index: index).row] as? NodeCellController)?.cellReference?.isVisited = true
+//                    mainView.grid.grid.reloadData()
+//                    mainView.grid.grid.reloadItems(at: [grid!.getIndexPath(index: index)])
+//                    mainView.grid.grid.collectionViewLayout.invalidateLayout()
+//                    mainView.grid.grid.layoutSubviews()
                 }
             }, updateViewOnCompletion: {
                 mainView.panel.isAlgoRunning = false
@@ -95,7 +97,8 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var toReload = grid?.userTappedOnNode(index: indexPath) ?? []
         cellControllers = cellControllerFactory.cellControllers(with: (grid?.fetchAllNodes())!)
-        collectionView.reloadData()
+        toReload.append(indexPath)
+        collectionView.reloadItems(at: toReload)
   
         
     }
@@ -141,45 +144,3 @@ enum ElementState {
     case End
 }
 
-
-enum Algorithms: String, CaseIterable, RawRepresentable {
-    case Dijkstra
-    case Astar
-    case BFS
-    case DFS
-}
-
-class AlgorithmFactory {
-    
-    var selectedAlgorithm: Algorithms = .Dijkstra
-         
-    init() {
-        
-    }
-    
-    func getAlgorithm(grid: Grid) -> Algorithm {
-        switch selectedAlgorithm {
-        case .Dijkstra:
-            return Dijkstra(grid: grid)
-        case .Astar:
-            return AStar(grid: grid)
-        case .BFS:
-            return Dijkstra(grid: grid)
-        case .DFS:
-            return DFS(grid: grid)
-        }
-    }
-
-    
-    func getAlgorithmActions() -> [UIAction] {
-        var actions = [UIAction]()
-        for algorithm in Algorithms.allCases {
-            actions.append(UIAction(title: algorithm.rawValue) { [unowned self] action in
-                selectedAlgorithm = algorithm
-            })
-        }
-        return actions
-    }
-    
-    
-}

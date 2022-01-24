@@ -19,22 +19,21 @@ class DFS: Algorithm {
     
     var timer : Timer?
     
-    func run(updateViewDuringRun: @escaping () -> (),  updateViewOnCompletion: @escaping () -> ()) {
+    func run(updateViewDuringRun: @escaping (_ index: GridIndex) -> (),  updateViewOnCompletion: @escaping () -> ()) {
         let start = grid.getStartNode()
         start.distance = 0
         unvisitedNodes = [start]
         let end = grid.getEndNode()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.0001, repeats: true) { [self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [self] _ in
             let node = unvisitedNodes.removeFirst()
             let closestNode = node
             if !closestNode.isWall {
                 closestNode.isVisited = true
-                updateViewDuringRun()
+                updateViewDuringRun(closestNode.gridIndex)
                 visitedNodesInOrder.append(closestNode)
                 if closestNode.gridIndex == end.gridIndex { stopTimer(updateViewOnCompletion) }
                 unvisitedNodes = getUnvisitedNeighbors(of: node) + unvisitedNodes
-                print(unvisitedNodes.count)
             }
             
         }

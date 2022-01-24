@@ -10,6 +10,7 @@ import UIKit
 class NodeCellController: CollectionCellController {
     
     fileprivate let item: Node
+    var cellReference: NodeCell?
     
     init(item: Node) {
         self.item = item
@@ -28,6 +29,7 @@ class NodeCellController: CollectionCellController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: type(of: self).cellIdentifier, for: indexPath) as! NodeCell
         cell.isVisited = item.isVisited
 //        cell.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        cellReference = cell
         return cell
     }
     

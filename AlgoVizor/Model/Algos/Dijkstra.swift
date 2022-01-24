@@ -19,20 +19,20 @@ class Dijkstra: Algorithm {
     
     var timer : Timer?
     
-    func run(updateViewDuringRun: @escaping () -> (),  updateViewOnCompletion: @escaping () -> ()) {
+    func run(updateViewDuringRun: @escaping (_ index: GridIndex) -> (),  updateViewOnCompletion: @escaping () -> ()) {
         let start = grid.getStartNode()
         start.distance = 0
         unvisitedNodes = grid.fetchAllNodes().sorted()
         let end = grid.getEndNode()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.0001, repeats: true) { [self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [self] _ in
             unvisitedNodes = unvisitedNodes.sorted()
             let node = unvisitedNodes.removeFirst()
             let closestNode = node
             if !closestNode.isWall {
                 if closestNode.distance == Double.greatestFiniteMagnitude { stopTimer(updateViewOnCompletion) }
                 closestNode.isVisited = true
-                updateViewDuringRun()
+                updateViewDuringRun(closestNode.gridIndex)
                 visitedNodesInOrder.append(closestNode)
                 if closestNode.gridIndex == end.gridIndex { stopTimer(updateViewOnCompletion) }
                 updateUnvisitedNeighbors(of: closestNode)
@@ -47,6 +47,7 @@ class Dijkstra: Algorithm {
         for neighbor in unvisitedNeighbors {
             if ((node.distance + 1) < neighbor.distance ) {
                 neighbor.distance = node.distance + 1
+                neighbor.prevNode = node
             }
             
         }

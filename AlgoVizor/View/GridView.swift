@@ -28,7 +28,7 @@ class GridView: UIView {
         grid = UICollectionView(frame: self.frame, collectionViewLayout: layout)
         addSubview(grid)
         grid.fillSuperview()
-        grid.backgroundColor = .black
+        grid.backgroundColor = .lynxWhite
         grid.isScrollEnabled = false
         
     }

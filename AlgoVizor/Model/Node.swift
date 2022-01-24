@@ -18,6 +18,8 @@ class Node {
     var isStart: Bool = false
     var isWall: Bool = false
     var isVisited: Bool = false
+    var isShortestPathNode: Bool = false
+    var prevNode: Node?
     var distance: Double = Double.greatestFiniteMagnitude
      
 }

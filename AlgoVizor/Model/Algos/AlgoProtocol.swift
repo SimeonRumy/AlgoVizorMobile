@@ -9,7 +9,7 @@ import Foundation
 
 protocol Algorithm: AnyObject {
     var grid: Grid { get set }
-    func run(updateViewDuringRun: @escaping ()->(), updateViewOnCompletion:  @escaping ()->())
+    func run(updateViewDuringRun: @escaping (GridIndex)->(), updateViewOnCompletion:  @escaping ()->())
     var timer : Timer? { get set }
 }
 
