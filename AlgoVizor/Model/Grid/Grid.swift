@@ -47,13 +47,14 @@ class Grid {
         for node in fetchAllNodes() {
             node.isVisited = false
             node.distance = Double.greatestFiniteMagnitude
+            node.isShortestPathNode = false
+            node.prevNode = nil
         }
     }
     
    func userTappedOnNode(index: IndexPath) -> [IndexPath] {
         let index = getGridIndex(index: index)
         var toReload = [IndexPath]()
-        print(index)
         switch elementSelectionState {
         case .Wall:
             let currentState = data[index.row][index.column].isWall
@@ -69,7 +70,6 @@ class Grid {
             data[currentEnd.row][currentEnd.column].isEnd = false
             currentEnd = index
         }
-        print(currentStart)
         return toReload
     }
     

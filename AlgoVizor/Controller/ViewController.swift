@@ -51,24 +51,14 @@ class ViewController: UIViewController {
     }
     
     func setupButtons() {
+        
         guard let mainView = view as? MainView else { return }
         
         mainView.panel.lauchButton.addAction(UIAction(handler: { [unowned self] action in
             let algo =  algorithmFactory.getAlgorithm(grid: grid!)
+            algo.delegate = self
             mainView.panel.isAlgoRunning = true
-            algo.run(updateViewDuringRun: { index in
-//                cellControllers = self.cellControllerFactory.cellControllers(with: (grid?.fetchAllNodes())!)
-                DispatchQueue.main.async {
-                    (cellControllers[grid!.getIndexPath(index: index).row] as? NodeCellController)?.cellReference?.isVisited = true
-//                    mainView.grid.grid.reloadData()
-//                    mainView.grid.grid.reloadItems(at: [grid!.getIndexPath(index: index)])
-//                    mainView.grid.grid.collectionViewLayout.invalidateLayout()
-//                    mainView.grid.grid.layoutSubviews()
-                }
-            }, updateViewOnCompletion: {
-                mainView.panel.isAlgoRunning = false
-                mainView.panel.lauchButton.setNeedsUpdateConfiguration()
-            })
+            algo.run()
         }), for: .touchUpInside)
         
         mainView.panel.addWallButton.addAction(UIAction(handler: { [unowned self] action in
@@ -92,6 +82,29 @@ class ViewController: UIViewController {
     
 }
 
+extension ViewController: AlgoritmDelegate {
+    
+    func nodeVisited(index: GridIndex) {
+        DispatchQueue.main.async { [self] in
+            (cellControllers[grid!.getIndexPath(index: index).row] as? NodeCellController)?.cellReference?.isVisited = true
+        }
+    }
+    
+    func algorithmFinishedRunning() {
+        guard let mainView = view as? MainView else { return }
+        mainView.panel.isAlgoRunning = false
+        mainView.panel.lauchButton.setNeedsUpdateConfiguration()
+    }
+    
+    func nodeIsShortestsPath(index: GridIndex) {
+        DispatchQueue.main.async { [self] in
+            (self.cellControllers[grid!.getIndexPath(index: index).row] as? NodeCellController)?.cellReference?.isShortestPath = true
+        }
+    }
+    
+    
+}
+
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -112,12 +125,6 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
                             bottom: (height - CGFloat(contentDimensions.rowNumber*GRID_SIZE))/2,
                             right: (width - CGFloat(contentDimensions.colNumber*GRID_SIZE))/2)
     }
-//
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        UIView.animate(withDuration: 1, delay: 1, usingSpringWithDamping: 0.5, initialSpringVelocity: 10, options: [], animations: {
-//            cell.transform = .identity
-//        })
-//    }
     
 }
 

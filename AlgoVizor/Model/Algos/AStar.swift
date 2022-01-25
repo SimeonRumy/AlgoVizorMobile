@@ -8,6 +8,11 @@
 import Foundation
 
 class AStar: Algorithm {
+    var shortestPathMarkerTimer: Timer?
+    
+    
+    var delegate: AlgoritmDelegate?
+    
     
     var grid: Grid
     var visitedNodesInOrder = [Node]()
@@ -17,28 +22,24 @@ class AStar: Algorithm {
         self.grid = grid
     }
     
-    var timer : Timer?
+    var mainAlgoTimer : Timer?
     
-    func run(updateViewDuringRun: @escaping (_ index: GridIndex) -> (),  updateViewOnCompletion: @escaping () -> ()) {
+    func run() {
         let start = grid.getStartNode()
         start.distance = 0
         unvisitedNodes = grid.fetchAllNodes().sorted()
         let end = grid.getEndNode()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.0001, repeats: true) { [self] _ in
+        mainAlgoTimer = Timer.scheduledTimer(withTimeInterval: 0.0001, repeats: true) { [self] _ in
             unvisitedNodes = unvisitedNodes.sorted()
-            for n in unvisitedNodes {
-                print(n.gridIndex, n.distance)
-            }
             let node = unvisitedNodes.removeFirst()
             let closestNode = node
             if !closestNode.isWall {
-                print(closestNode.gridIndex)
-                if closestNode.distance == Double.greatestFiniteMagnitude { stopTimer(updateViewOnCompletion) }
+                if closestNode.distance == Double.greatestFiniteMagnitude {stopExecution(endNode: end) }
                 closestNode.isVisited = true
-                updateViewDuringRun(closestNode.gridIndex)
+                delegate?.nodeVisited(index: closestNode.gridIndex)
                 visitedNodesInOrder.append(closestNode)
-                if closestNode.gridIndex == end.gridIndex { stopTimer(updateViewOnCompletion) }
+                if closestNode.gridIndex == end.gridIndex { stopExecution(endNode: end) }
                 updateUnvisitedNeighbors(of: closestNode)
             }
             

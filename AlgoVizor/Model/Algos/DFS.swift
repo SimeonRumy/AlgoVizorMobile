@@ -8,6 +8,10 @@
 import Foundation
 
 class DFS: Algorithm {
+    var shortestPathMarkerTimer: Timer?
+    
+    weak var delegate: AlgoritmDelegate?
+    
     
     var grid: Grid
     var visitedNodesInOrder = [Node]()
@@ -17,22 +21,22 @@ class DFS: Algorithm {
         self.grid = grid
     }
     
-    var timer : Timer?
+    var mainAlgoTimer : Timer?
     
-    func run(updateViewDuringRun: @escaping (_ index: GridIndex) -> (),  updateViewOnCompletion: @escaping () -> ()) {
+    func run() {
         let start = grid.getStartNode()
         start.distance = 0
         unvisitedNodes = [start]
         let end = grid.getEndNode()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [self] _ in
+        mainAlgoTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [self] _ in
             let node = unvisitedNodes.removeFirst()
             let closestNode = node
             if !closestNode.isWall {
                 closestNode.isVisited = true
-                updateViewDuringRun(closestNode.gridIndex)
+                delegate?.nodeVisited(index: closestNode.gridIndex)
                 visitedNodesInOrder.append(closestNode)
-                if closestNode.gridIndex == end.gridIndex { stopTimer(updateViewOnCompletion) }
+                if closestNode.gridIndex == end.gridIndex { stopExecution(endNode: end) }
                 unvisitedNodes = getUnvisitedNeighbors(of: node) + unvisitedNodes
             }
             

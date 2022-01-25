@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+
 class NodeCell: UICollectionViewCell {
     
     let visitedView: UIView = UIView()
@@ -25,7 +27,6 @@ class NodeCell: UICollectionViewCell {
                 }
                 UIView.animate(withDuration: 1, delay: 0.3) {
                     self.visitedView.backgroundColor = UIColor(red: 0.71, green: 0.20, blue: 0.44, alpha: 1.00)
-//                    self.layer.borderColor = UIColor(red: 0.71, green: 0.20, blue: 0.44, alpha: 1.00).cgColor
                 }
                 UIView.animate(withDuration: 1, delay: 0.45) {
                     self.visitedView.backgroundColor = UIColor(red: 0.60, green: 0.00, blue: 0.54, alpha: 1.00)
@@ -37,6 +38,23 @@ class NodeCell: UICollectionViewCell {
                 visitedView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
                 self.visitedView.layer.cornerRadius = 50
                 self.layer.borderColor = UIColor(red: 0.86, green: 0.87, blue: 0.88, alpha: 1.00).cgColor
+            }
+        }
+    }
+    
+    var isShortestPath = false {
+        didSet {
+            if isShortestPath {
+                UIView.animate(withDuration: 1) {
+                    self.visitedView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                    self.visitedView.backgroundColor = .shortestPathColor
+                    self.layer.borderColor = UIColor.shortestPathColor.cgColor
+                }
+                UIView.animate(withDuration: 1) {
+                    self.visitedView.transform = .identity
+                }
+            } else {
+                
             }
         }
     }

@@ -9,6 +9,10 @@ import Foundation
 
 class Dijkstra: Algorithm {
     
+    var shortestPathMarkerTimer: Timer?
+    
+    weak var delegate: AlgoritmDelegate?
+    
     var grid: Grid
     var visitedNodesInOrder = [Node]()
     var unvisitedNodes = [Node]()
@@ -17,24 +21,24 @@ class Dijkstra: Algorithm {
         self.grid = grid
     }
     
-    var timer : Timer?
+    var mainAlgoTimer : Timer?
     
-    func run(updateViewDuringRun: @escaping (_ index: GridIndex) -> (),  updateViewOnCompletion: @escaping () -> ()) {
+    func run() {
         let start = grid.getStartNode()
         start.distance = 0
         unvisitedNodes = grid.fetchAllNodes().sorted()
         let end = grid.getEndNode()
         
-        timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [self] _ in
+        mainAlgoTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [self] _ in
             unvisitedNodes = unvisitedNodes.sorted()
             let node = unvisitedNodes.removeFirst()
             let closestNode = node
             if !closestNode.isWall {
-                if closestNode.distance == Double.greatestFiniteMagnitude { stopTimer(updateViewOnCompletion) }
+                if closestNode.distance == Double.greatestFiniteMagnitude { stopExecution(endNode: end) }
                 closestNode.isVisited = true
-                updateViewDuringRun(closestNode.gridIndex)
+                delegate?.nodeVisited(index: closestNode.gridIndex)
                 visitedNodesInOrder.append(closestNode)
-                if closestNode.gridIndex == end.gridIndex { stopTimer(updateViewOnCompletion) }
+                if closestNode.gridIndex == end.gridIndex { stopExecution(endNode: end) }
                 updateUnvisitedNeighbors(of: closestNode)
             }
             
