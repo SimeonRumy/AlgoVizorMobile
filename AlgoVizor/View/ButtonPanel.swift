@@ -26,6 +26,8 @@ class ButtonPanel: UIView {
     var isAlgoRunning = false
     let wrapView = UIView()
     
+    var buttonSelection: ElementState = .Start
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .lynxWhite
@@ -67,7 +69,6 @@ class ButtonPanel: UIView {
                         padding: UIEdgeInsets(top: 10, left: 50, bottom: 10, right: 50))
         wrapView.backgroundColor = .systemGray5
         wrapView.layer.cornerRadius = 10
-        
     }
     
     func addButtonStack() {
@@ -116,24 +117,6 @@ class ButtonPanel: UIView {
         addWallButton.configuration?.image = UIImage(systemName: "square.grid.3x1.below.line.grid.1x2")
         addWallButton.configuration?.baseForegroundColor = .systemBrown
         addWallButton.configuration?.baseBackgroundColor = .systemBrown
-        addWallButton.configurationUpdateHandler = { [unowned self] button in
-            var conf = button.configuration
-            if button.state == .selected {
-                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                    var outgoing = incoming
-                    outgoing.font = UIFont.boldSystemFont(ofSize: FontSizeCalculator.fontSize)
-                    return outgoing
-                }
-            } else {
-                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                    var outgoing = incoming
-                    outgoing.font = UIFont.systemFont(ofSize: FontSizeCalculator.fontSize)
-                    return outgoing
-                }
-            }
-            button.configuration = conf
-
-        }
         gridSettingStack.addArrangedSubview(addWallButton)
     }
     

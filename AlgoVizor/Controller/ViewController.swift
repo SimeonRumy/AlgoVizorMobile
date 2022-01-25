@@ -58,19 +58,30 @@ class ViewController: UIViewController {
             let algo =  algorithmFactory.getAlgorithm(grid: grid!)
             algo.delegate = self
             mainView.panel.isAlgoRunning = true
+            grid?.resetAllNodes()
+            mainView.grid.grid.reloadData()
+            switchButtons()
             algo.run()
         }), for: .touchUpInside)
         
+        var buttons = [mainView.panel.addWallButton, mainView.panel.setStartButton, mainView.panel.resetGridButton]
+                       
         mainView.panel.addWallButton.addAction(UIAction(handler: { [unowned self] action in
+            for button in buttons { button.isSelected = false }
             grid?.elementSelectionStateChanged(state: .Wall)
+            mainView.panel.addWallButton.isSelected = true
         }), for: .touchUpInside)
         
         mainView.panel.setStartButton.addAction(UIAction(handler: { [unowned self] action in
+            for button in buttons { button.isSelected = false }
             grid?.elementSelectionStateChanged(state: .Start)
+            mainView.panel.setStartButton.isSelected = true
         }), for: .touchUpInside)
         
         mainView.panel.setEndButton.addAction(UIAction(handler: { [unowned self] action in
+            for button in buttons { button.isSelected = false }
             grid?.elementSelectionStateChanged(state: .End)
+            mainView.panel.setEndButton.isSelected = true
         }), for: .touchUpInside)
         
         mainView.panel.resetGridButton.addAction(UIAction(handler: { [unowned self] action in
@@ -80,7 +91,20 @@ class ViewController: UIViewController {
         
     }
     
+    func switchButtons() {
+        
+        guard let mainView = view as? MainView else { return }
+        
+        mainView.panel.lauchButton.isEnabled = !mainView.panel.lauchButton.isEnabled
+        mainView.panel.addWallButton.isEnabled = !mainView.panel.addWallButton.isEnabled
+        mainView.panel.setEndButton.isEnabled = !mainView.panel.setEndButton.isEnabled
+        mainView.panel.setStartButton.isEnabled = !mainView.panel.setStartButton.isEnabled
+        mainView.panel.resetGridButton.isEnabled = !mainView.panel.resetGridButton.isEnabled
+    }
+    
 }
+
+//wh7ytmmty
 
 extension ViewController: AlgoritmDelegate {
     
@@ -94,6 +118,7 @@ extension ViewController: AlgoritmDelegate {
         guard let mainView = view as? MainView else { return }
         mainView.panel.isAlgoRunning = false
         mainView.panel.lauchButton.setNeedsUpdateConfiguration()
+        switchButtons()
     }
     
     func nodeIsShortestsPath(index: GridIndex) {
@@ -143,11 +168,3 @@ extension ViewController: UICollectionViewDataSource {
     }
     
 }
-
-
-enum ElementState {
-    case Wall
-    case Start
-    case End
-}
-

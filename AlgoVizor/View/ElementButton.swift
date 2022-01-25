@@ -19,6 +19,7 @@ class ElementButton: UIButton {
         config.cornerStyle = .capsule
         config.titleAlignment = .center
         config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: FontSizeCalculator.fontSize)
+        
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
             outgoing.font = incoming.font?.withSize(FontSizeCalculator.fontSize)
@@ -26,7 +27,25 @@ class ElementButton: UIButton {
         }
         
         self.configuration = config
-        changesSelectionAsPrimaryAction = true
+        
+//        self.configurationUpdateHandler = { [unowned self] button in
+//            var conf = button.configuration
+//            if isSelected {
+//                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+//                    var outgoing = incoming
+//                    outgoing.font = UIFont.boldSystemFont(ofSize: FontSizeCalculator.fontSize)
+//                    return outgoing
+//                }
+//            } else {
+//                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+//                    var outgoing = incoming
+//                    outgoing.font = UIFont.systemFont(ofSize: FontSizeCalculator.fontSize)
+//                    return outgoing
+//                }
+//            }
+//            button.configuration = conf
+//        }
+//        changesSelectionAsPrimaryAction = true
         
     }
     

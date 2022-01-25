@@ -50,7 +50,7 @@ class NodeCell: UICollectionViewCell {
                     self.visitedView.backgroundColor = .shortestPathColor
                     self.layer.borderColor = UIColor.shortestPathColor.cgColor
                 }
-                UIView.animate(withDuration: 1) {
+                UIView.animate(withDuration: 1, delay: 0.25) {
                     self.visitedView.transform = .identity
                 }
             } else {

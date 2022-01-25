@@ -41,8 +41,8 @@ extension Algorithm {
         var currentNode: Node = endNode
         var nodesInShortestPathOrder = [Node]()
         while currentNode.prevNode != nil {
-            currentNode = currentNode.prevNode!
             nodesInShortestPathOrder.append(currentNode)
+            currentNode = currentNode.prevNode!
         }
         shortestPathMarkerTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [self] _ in
             if nodesInShortestPathOrder.isEmpty {
