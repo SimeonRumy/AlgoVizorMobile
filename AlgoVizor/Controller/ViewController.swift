@@ -54,6 +54,8 @@ class ViewController: UIViewController {
         
         guard let mainView = view as? MainView else { return }
         
+        mainView.panel.setStartButton.isSelected = true
+        
         mainView.panel.lauchButton.addAction(UIAction(handler: { [unowned self] action in
             let algo =  algorithmFactory.getAlgorithm(grid: grid!)
             algo.delegate = self
@@ -64,7 +66,7 @@ class ViewController: UIViewController {
             algo.run()
         }), for: .touchUpInside)
         
-        var buttons = [mainView.panel.addWallButton, mainView.panel.setStartButton, mainView.panel.resetGridButton]
+        var buttons = [mainView.panel.addWallButton, mainView.panel.setStartButton, mainView.panel.setEndButton]
                        
         mainView.panel.addWallButton.addAction(UIAction(handler: { [unowned self] action in
             for button in buttons { button.isSelected = false }

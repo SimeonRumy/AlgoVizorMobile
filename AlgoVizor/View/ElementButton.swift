@@ -9,7 +9,7 @@ import UIKit
 
 class ElementButton: UIButton {
     
-    var config = UIButton.Configuration.tinted()
+    var config = UIButton.Configuration.plain()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,25 +27,6 @@ class ElementButton: UIButton {
         }
         
         self.configuration = config
-        
-//        self.configurationUpdateHandler = { [unowned self] button in
-//            var conf = button.configuration
-//            if isSelected {
-//                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-//                    var outgoing = incoming
-//                    outgoing.font = UIFont.boldSystemFont(ofSize: FontSizeCalculator.fontSize)
-//                    return outgoing
-//                }
-//            } else {
-//                conf?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-//                    var outgoing = incoming
-//                    outgoing.font = UIFont.systemFont(ofSize: FontSizeCalculator.fontSize)
-//                    return outgoing
-//                }
-//            }
-//            button.configuration = conf
-//        }
-//        changesSelectionAsPrimaryAction = true
         
     }
     
